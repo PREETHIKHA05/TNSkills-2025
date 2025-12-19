@@ -4,7 +4,6 @@ from database import create_tables
 import sqlite3
 db_name='vehicle.db'
 app=Flask(__name__)
-create_tables()
 def parse_data():
     cleaned_rows=[]
     with open('driver_logs_raw.csv','r') as f:
@@ -39,7 +38,9 @@ def show_tables():
      cur.execute('select * from trip')
      data=cur.fetchall()
      print(data)
-
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/check_availability',methods=['GET','POST'])
 def check_availability():
@@ -54,9 +55,9 @@ def check_availability():
           for id,s,e in available:
                if e>end_date and s<start_date:
                     vehicles_avail.append(id)
-          return render_template('check_availability.html',(vehicles_avail,))
-@app.route('/')
-def index():
-    return render_template('index.html')
+          return render_template('check_availability.html',vehicles_avail=vehicles_avail)
+     if request.method=='GET':
+          return render_template('check_availabilty.html')
+
 if __name__=='__main__':
     app.run(debug=True)

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Check Availability of Trains</h1>
+    <form action="/check_availability" method="POST">
+    <label name="start_date">Enter start date:</label>
+    <input type="text" name="start_date">
+    <label name="end_date">Enter end date:</label>
+    <input type="text" name="end_date">
+    <p>Available Vehicles:</p>
+    {% for v in vehicles_avail %}
+    <p>v</p>
+    </form>
+</body>
+</html>
