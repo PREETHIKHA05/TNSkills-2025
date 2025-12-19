@@ -38,6 +38,6 @@ def create_tables():
     conn.commit()
 def insert_values():
     conn=sqlite3.connect(db_name)
-    #to insert raw sample values
     
+
     
