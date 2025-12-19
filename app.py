@@ -41,7 +41,5 @@ def check_availability():
           return render_template('check_availability.html',vehicles_avail=vehicles_avail)
      if request.method=='GET':
           return render_template('check_availability.html')
-
-
 if __name__=='__main__':
     app.run(debug=True)
