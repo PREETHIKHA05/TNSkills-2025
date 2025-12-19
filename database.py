@@ -16,8 +16,8 @@ def create_tables():
                 TripID INTEGER PRIMARY KEY AUTOINCREMENT,
                 VehicleID INTEGER,
                 DriverName TEXT,
-                StartDate DATETIME,
-                EndDate DATETIME,
+                StartDate TEXT,
+                EndDate TEXT,
                 DistanceKm INTEGER,
                 FOREIGN KEY(VehicleID) REFERENCES Vehicles(VehicleID))''')
     conn.commit()
@@ -36,6 +36,7 @@ def create_tables():
                     Notes TEXT,
                     FOREIGN KEY(VehicleID) REFERENCES Vehicles(VehicleID))''')
     conn.commit()
+
 def insert_values():
     conn=sqlite3.connect(db_name)
     

@@ -8,33 +8,31 @@ app=Flask(__name__)
 
 def parse_data():
     cleaned_rows=[]
-    with open('driver_logs.csv','r') as f:
+    with open('driver_logs_raw.csv','r') as f:
         readerObject=csv.DictReader(f)
         for row in readerObject:
-            try:
-                date=row["Date"].strip()
-                if '/' in date:
-                    correct_date=date.split('/')
-                if '-' in date:
-                    correct_date=date.split('-')
-                for k in range(len(correct_date)):
                     try:
-                        correct_date[k]=int(correct_date[k])
-
+                        
+                        row["Odometer_Reading"]=int(row["Odometer_Reading"])
+                        row["Trip_Distance"]=int(row(["Trip_Distance"]))
+                        cleaned_rows.append(row)
                     except:
+                        print("Error")
                         continue
-                dt=correct_date.join('/')
-                row["Odometer_Reading"]=int(row["Odometer_Reading"])
-                row["Trip_Distance"]=int(row(["Trip_Distance"]))
-                cleaned_rows.append(row)
-            except:
-                continue
+    print(cleaned_rows)
     conn=sqlite3.connect(db_name)
     cur=conn.cursor()
     for row in cleaned_rows:
         cur.execute('Insert into trips(VehicleID,StartDate,EndDate,DriverName,StartDate,DistanceKm) values(?,?,?,?,?,?)',(row['VehicleID'],dt,dt,row['Driver'],row['Odometer_Reading'],row['Trip_Distance']))
     conn.commit()
-
+parse_data()
+def show_tables():
+    conn=sqlite3.connect(db_name)
+    cur=conn.cursor()
+    cur.execute('select * from trip')
+    rows=cur.fetchall()
+    print(rows)
+show_tables()
 @app.route('/')
 def index():
     return render_template('index.html')
