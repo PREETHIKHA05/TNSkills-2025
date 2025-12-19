@@ -36,5 +36,8 @@ def create_tables():
                     Notes TEXT,
                     FOREIGN KEY(VehicleID) REFERENCES Vehicles(VehicleID))''')
     conn.commit()
-create_tables()
+def insert_values():
+    conn=sqlite3.connect(db_name)
+    #to insert raw sample values
+    
     
