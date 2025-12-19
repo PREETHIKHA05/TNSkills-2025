@@ -4,7 +4,7 @@ def create_tables():
     conn=sqlite3.connect(db_name)
     cur=conn.cursor()
     cur.execute('''CREATE Table Vehicles(
-                VehicleID INTEGER PRIMARY KEY,
+                VehicleID TEXT PRIMARY KEY,
                 RegNo TEXT,
                 Type TEXT,
                 LastServiceDate DATETIME,
@@ -13,28 +13,28 @@ def create_tables():
                 ''')
     conn.commit()
     cur.execute('''CREATE TABLE TRIP(
-                TripID AUTOINCREMENT PRIMARY KEY,
+                TripID INTEGER PRIMARY KEY AUTOINCREMENT,
                 VehicleID INTEGER,
                 DriverName TEXT,
                 StartDate DATETIME,
                 EndDate DATETIME,
-                DistanceKm INTEGER
-                FOREIGN KEY(VehicleID) REFERENCES Vehicles(VehicleID)''')
+                DistanceKm INTEGER,
+                FOREIGN KEY(VehicleID) REFERENCES Vehicles(VehicleID))''')
     conn.commit()
     cur.execute('''CREATE TABLE MAINTANENCE_ALERTS(
-                    ALERT_ID PRIMARY KEY AUTOINCREMENT,
-                    VEHICLE_ID INTEGER,
+                    ALERT_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    VehicleID INTEGER,
                     ALERT_DATE DATETIME,
                     REASON TEXT,
                     FOREIGN KEY(VehicleID) REFERENCES Vehicles(VehicleID))''')
     conn.commit()
     cur.execute('''CREATE TABLE Service_History(
-                    Service_ID INTEGER PRIMARYKEY,
+                    Service_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                     VehicleID INTEGER,
                     ServiceDate DATETIME,
                     OdometerReading INTEGER,
                     Notes TEXT,
-                    FOREIGN KEY(VehicleID) REFERENCES Vehicles(VehicleID)))''')
+                    FOREIGN KEY(VehicleID) REFERENCES Vehicles(VehicleID))''')
     conn.commit()
-    
+create_tables()
     
