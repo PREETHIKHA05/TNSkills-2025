@@ -3,6 +3,7 @@ import csv
 from database import create_tables
 import sqlite3
 db_name='vehicle.db'
+create_tables()
 app=Flask(__name__)
 def parse_data():
     cleaned_rows=[]
@@ -19,25 +20,7 @@ def parse_data():
     for row in cleaned_rows:
         cur.execute('Insert into trip(VehicleID,StartDate,EndDate,DriverName,StartDate,DistanceKm) values(?,?,?,?,?,?)',(row[0],row[1],row[1],row[2],row[3],row[4]))
         conn.commit()
-def populate_data():
-     conn=sqlite3.connect(db_name)
-     cur=conn.cursor()
-     cur.execute('insert into vehicles values( ?, ? , ?, ? ,?,?)',( "V1", "REG-001" , "Truck" , "2025-05-20" , 20000 , 10000 ))
-     cur.execute('insert into vehicles values( ?, ? , ?, ? ,?,?)',( "V_001" , "REG-101" , "Van" , "2025-10-01" , 50400 , 40400))
-     cur.execute('insert into vehicles values( ?, ? , ?, ? ,?,?)',( "V_002" , "REG-102" , "Car" , "2025-11-15" , 12050 , 10000 ))
-     cur.execute('insert into vehicles values( ?, ? , ?, ? ,?,?)',( "V_003" , "REG-103" , "Van" , "2025-08-20" , 8200 , 2000 ))
-     cur.execute('insert into trip values( ?, ? , ?, ? ,?,?)',( 1 , "V1" , "TestDriver" , "2025-12-20" , "2025-12-30 ",500))
-     conn.commit()
 
-def show_tables():
-     conn=sqlite3.connect(db_name)
-     cur=conn.cursor()
-     cur.execute('select * from vehicles')
-     data=cur.fetchall()
-     print(data)
-     cur.execute('select * from trip')
-     data=cur.fetchall()
-     print(data)
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -49,7 +32,7 @@ def check_availability():
           end_date=request.form.get('end_date')
           conn=sqlite3.connect(db_name)
           cur=conn.cursor()
-          cur.execute('Select vehicles.vehicleID,vehicles.StartDate,vehicles.EndDate from vehicles,trip vehicles.VehicleID=trip.VehicleID',(start_date,end_date))
+          cur.execute('Select vehicleID,StartDate,EndDate from vehicles,trip')
           available=cur.fetchall()
           vehicles_avail=[]
           for id,s,e in available:
@@ -57,7 +40,8 @@ def check_availability():
                     vehicles_avail.append(id)
           return render_template('check_availability.html',vehicles_avail=vehicles_avail)
      if request.method=='GET':
-          return render_template('check_availabilty.html')
+          return render_template('check_availability.html')
+
 
 if __name__=='__main__':
     app.run(debug=True)
