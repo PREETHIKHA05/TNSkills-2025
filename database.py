@@ -7,7 +7,7 @@ def create_tables():
                 VehicleID TEXT PRIMARY KEY,
                 RegNo TEXT,
                 Type TEXT,
-                LastServiceDate DATETIME,
+                LastServiceDate TEXT,
                 CurrentOdometer INTEGER,
                 LastServiceOdometer INTEGER)
                 ''')
