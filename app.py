@@ -4,26 +4,22 @@ from database import create_tables
 import sqlite3
 db_name='vehicle.db'
 app=Flask(__name__)
-
+create_tables()
 def parse_data():
     cleaned_rows=[]
     with open('driver_logs_raw.csv','r') as f:
-        readerObject=csv.DictReader(f)
+        readerObject=list(csv.reader(f))[1:]
         for row in readerObject:
-                    try:
-                        row["Odometer_Reading"]=int(row["Odometer_Reading"])
-                        row["Trip_Distance"]=int(row(["Trip_Distance"]))
-                        cleaned_rows.append(row)
-                    except:
-                        print("Error")
-                        continue
-    print(cleaned_rows)
+                    if not(row[3].isdigit()):
+                         continue
+                    if not(row[4].isdigit()):
+                         continue
+                    cleaned_rows.append(row)
     conn=sqlite3.connect(db_name)
     cur=conn.cursor()
     for row in cleaned_rows:
-        cur.execute('Insert into trips(VehicleID,StartDate,EndDate,DriverName,StartDate,DistanceKm) values(?,?,?,?,?,?)',(row['VehicleID'],dt,dt,row['Driver'],row['Odometer_Reading'],row['Trip_Distance']))
+        cur.execute('Insert into trip(VehicleID,StartDate,EndDate,DriverName,StartDate,DistanceKm) values(?,?,?,?,?,?)',(row[0],row[1],row[1],row[2],row[3],row[4]))
         conn.commit()
-
 def populate_data():
      conn=sqlite3.connect(db_name)
      cur=conn.cursor()
@@ -43,7 +39,9 @@ def show_tables():
      cur.execute('select * from trip')
      data=cur.fetchall()
      print(data)
-show_tables()
+
+
+@app.route('/')
 @app.route('/')
 def index():
     return render_template('index.html')
