@@ -32,7 +32,7 @@ def check_availability():
           end_date=request.form.get('end_date')
           conn=sqlite3.connect(db_name)
           cur=conn.cursor()
-          cur.execute('Select vehicleID,StartDate,EndDate from vehicles,trip')
+          cur.execute('Select vehicleID,StartDate,EndDate from trip')
           available=cur.fetchall()
           vehicles_avail=[]
           for id,s,e in available:
